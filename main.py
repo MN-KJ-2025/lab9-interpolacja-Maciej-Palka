@@ -79,4 +79,17 @@ def L_inf(
         (float): Wartość normy L-nieskończoność.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    xr_arr = np.array(xr)
+    x_arr = np.array(x)
+
+    if not np.issubdtype(xr_arr.dtype, np.number) or not np.issubdtype(x_arr.dtype, np.number):
+        return None
+
+    if xr_arr.shape != x_arr.shape:
+        return None
+
+    if xr_arr.size == 0:
+        return None
+
+    return float(np.max(np.abs(xr_arr - x_arr)))
+    
