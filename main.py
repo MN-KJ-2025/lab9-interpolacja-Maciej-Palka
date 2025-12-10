@@ -18,7 +18,11 @@ def chebyshev_nodes(n: int = 10) -> np.ndarray | None:
         (np.ndarray): Wektor węzłów Czebyszewa (n,).
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    if not isinstance(n, int):
+        return None
+    
+    k = np.arange(0, n)
+    return np.cos(k * np.pi / (n-1))
 
 
 def bar_cheb_weights(n: int = 10) -> np.ndarray | None:
@@ -31,8 +35,12 @@ def bar_cheb_weights(n: int = 10) -> np.ndarray | None:
         (np.ndarray): Wektor wag dla węzłów Czebyszewa (n,).
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    weights = np.ones(n)
+    weights[0] = 0.5
+    weights[n-1] = 0.5
+    weights[1::2] *= -1
 
+    return weights
 
 def barycentric_inte(
     xi: np.ndarray, yi: np.ndarray, wi: np.ndarray, x: np.ndarray
