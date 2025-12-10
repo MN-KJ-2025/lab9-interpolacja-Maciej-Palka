@@ -60,7 +60,31 @@ def barycentric_inte(
         (np.ndarray): Wektor wartości funkcji interpolującej (n,).
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    if not (len(xi) == len(yi) and len(yi) == len(wi)):
+        return None
+    
+    xi = xi.reshape(1, -1)
+    yi = yi.reshape(1, -1)
+    wi = wi.reshape(1, -1)
+    x = x.reshape(-1, 1)
+
+    diff = x - xi
+
+    # maska trafienia dokładnie w węzeł
+    hit = diff == 0
+
+    L = wi / diff
+    num = np.sum(L * yi, axis=1)
+    den = np.sum(L, axis=1)
+    result = num / den
+
+    # nadpisanie punktów trafiających w węzły
+    for i in range(len(x)):
+        if np.any(hit[i]):
+            result[i] = yi[0, np.where(hit[i])[0][0]]
+
+    return result
+
 
 
 def L_inf(
